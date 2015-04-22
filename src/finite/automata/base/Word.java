@@ -5,6 +5,9 @@
  */
 package finite.automata.base;
 
+import java.util.Iterator;
+import java.util.Set;
+
 /**
  *
  * @author Adam
@@ -38,17 +41,55 @@ public class Word {
         return a.toString() + next.toString();
     }
     
-    public static Word fromString(String word) {
-        Symbol a = new Symbol(word.charAt(0));
+    public Symbol a() {
+        return a;
+    }
+
+    public Word x() {
+        return next;
+    }
+ 
+    public boolean isValid(Set<Symbol> Sigma) {
+        
+        if (!Sigma.contains(a)) {
+            return false;
+        } 
+        
+        if (next == null) {
+            return true;
+        }
+        
+        return next.isValid(Sigma);
+    }
+    
+    
+    
+    public static Word fromString(String word, Set<Symbol> language) throws LanguageException {
+        Symbol a = null;
+        char c = word.charAt(0);
+        Iterator<Symbol> it = language.iterator();
+        while (it.hasNext()) {
+            Symbol s = it.next();
+            if (s.toString().equals(String.valueOf(c))) {
+                a = s;
+                break;
+            }   
+        }
+        if (a == null) {
+            throw new LanguageException("Invalid symbol: "+c);
+        }
+            
+//        Symbol a = new Symbol(word.charAt(0));
         String restStr = word.substring(1);
         
         Word rest;
         if (restStr.isEmpty()) {
             rest = Word.EMPTY;
         } else {
-            rest = fromString(restStr);
+            rest = fromString(restStr, language);
         }
         return new Word(a, rest);
     }
+
     
 }
