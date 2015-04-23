@@ -3,13 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package finite.automata.base;
+package finite.automata.base.DFA;
+
+import finite.automata.base.State;
+import finite.automata.base.Symbol;
+import finite.automata.base.Word;
 
 /**
  *
  * @author adam
  */
-public abstract class Delta {
+public abstract class DeltaDFA {
     
     public abstract State next(State q, Symbol a);
     
