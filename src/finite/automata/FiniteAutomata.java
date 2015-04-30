@@ -30,15 +30,23 @@ public class FiniteAutomata {
      */
     public static void main(String[] args) {
         try {
-            testFA();
+//            testFA();
+            Alphabeth a = new Alphabeth("abc");
+            
+            
+            Set<String> words = a.getWords(5);
+            
+            System.out.println(words.toString());
+            
         } catch (LanguageException ex) {
             Logger.getLogger(FiniteAutomata.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         Set<String> perms = new HashSet();
         String[] a = {"0","1","2","3","4"};
         
         
-        new FiniteAutomata();
+//        new FiniteAutomata();
         
         
     } 
@@ -230,8 +238,9 @@ public class FiniteAutomata {
         Word word = Word.fromString(w,alphabet);
         
         
+        
         FA dfa = new FA(FA.Type.DFA,states, q0, ts, alphabet);
-//        System.out.println(dfa.deltaHat(q0, word));
+        
     }
 //    
 //    public static void testDFA() {

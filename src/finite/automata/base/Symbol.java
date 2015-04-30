@@ -11,7 +11,7 @@ import finite.automata.base.Exceptions.LanguageException;
  *
  * @author Adam
  */
-public class Symbol {
+public class Symbol implements Comparable<Object> {
     private final String symbol;
     
     public static Symbol EMPTY = new Symbol();
@@ -33,6 +33,14 @@ public class Symbol {
     @Override
     public String toString() {
         return symbol;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (o instanceof Symbol) {
+            return symbol.compareTo(((Symbol)o).symbol);
+        }
+        return 0;
     }
     
     

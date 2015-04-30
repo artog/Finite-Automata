@@ -176,13 +176,82 @@ public class FA {
                 new Transition(from, to, symb)
         );
     }
-
+    
+    /**
+     * Set/replace the start state
+     * @param startState new start state.
+     */
     public void setStartState(State startState) {
         this.startState = startState;
     }
     
     
+    /**
+     * Test if a word is accepted by the automata
+     * @param word
+     * @return
+     * @throws LanguageException Thrown in case of invalid word.
+     */
+    public boolean test(String word) 
+            throws LanguageException 
+    {
+        Set<State> finalStates = this.deltaHat(null, Word.fromString(word, alphabet));
+        
+        return finalStates.stream().anyMatch((s) -> (s.isFinal()));
+    }
     
+    /**
+     * Batch test an array of string
+     * @param words
+     * @return A Map with the string as key and a boolean denoting if that string was accepted.
+     * @throws LanguageException Thrown if an invalid word is encountered.
+     */
+    public Map<String,Boolean> batchTest(String[] words) throws LanguageException {
+        Map<String, Boolean> retval = new HashMap();
+        for (String word : words) {
+            try {
+                retval.put(word, test(word));
+            } catch (LanguageException le) {
+                throw new LanguageException();
+            }
+        }
+        return retval;
+    }
+    
+    public Set<State> getAccessibleStates() {
+        Set<State> accStates = new HashSet();
+        return accStates;
+    }
+    
+    public Set<State> getAccessibleStatesFrom(Set<State> qs) {
+
+        Set<State> accStates = new HashSet();
+        accStates.addAll(qs);
+        
+        for (State q : qs) {
+            for (Symbol a : alphabet) {
+                
+                Set<State> next =  delta(q, a);
+                accStates.addAll(next);
+            }
+        }
+        if (accStates.size() == qs.size()) {
+            return qs;
+        } else {
+            return getAccessibleStatesFrom(accStates);
+        }
+    }
+    
+    
+    /**
+     * Create a finite automata from an xml file
+     * @param source
+     * @return
+     * @throws InvalidFileException
+     * @throws LanguageException
+     * @throws ExistingTransitionException
+     * @throws EpsilonTransitionException 
+     */
     public static FA fromFile(File source) 
             throws InvalidFileException, LanguageException, ExistingTransitionException, EpsilonTransitionException 
     {
