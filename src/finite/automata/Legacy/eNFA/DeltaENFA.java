@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package finite.automata.base.eNFA;
+package finite.automata.Legacy.eNFA;
 
-import finite.automata.base.NFA.*;
 import finite.automata.base.State;
 import finite.automata.base.Symbol;
 import finite.automata.base.Word;

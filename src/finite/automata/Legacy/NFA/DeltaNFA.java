@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package finite.automata.base.NFA;
+package finite.automata.Legacy.NFA;
 
 import finite.automata.base.State;
 import finite.automata.base.Symbol;

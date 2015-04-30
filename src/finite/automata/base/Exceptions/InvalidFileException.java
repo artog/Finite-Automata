@@ -3,22 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package finite.automata.base;
+package finite.automata.base.Exceptions;
 
 /**
  *
- * @author adam
+ * @author Adam
  */
-public class LanguageException extends Exception {
+public class InvalidFileException extends Exception {
 
-    public LanguageException() {
+    public InvalidFileException() {
         super();
     }
 
-    public LanguageException(String msg) {
+    public InvalidFileException(String msg) {
         super(msg);
     }
-    
-    
     
 }

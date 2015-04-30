@@ -5,6 +5,7 @@
  */
 package finite.automata.base;
 
+import finite.automata.base.Exceptions.LanguageException;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -24,7 +25,7 @@ public class Word {
     }
 
     private Word() {
-        this.a = null;
+        this.a = Symbol.EMPTY;
         this.next = null;
     }
 

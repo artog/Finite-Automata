@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package finite.automata.base.DFA;
+package finite.automata.Legacy.eNFA;
 
+import finite.automata.Legacy.NFA.DeltaNFA;
 import finite.automata.base.*;
-import finite.automata.base.LanguageException;
+import finite.automata.base.Exceptions.LanguageException;
 import finite.automata.base.State;
 import finite.automata.base.Symbol;
 import finite.automata.base.Word;
@@ -16,17 +17,17 @@ import java.util.Set;
  *
  * @author Adam
  */
-public class DFA {
+public class ENFA {
     
     
 
     private final Set<State> Q;
     private final Set<Symbol> Sigma;
-    private final DeltaDFA d;
-    private final State q0;
+    private final DeltaNFA d;
+    private final Set<State> q0;
     private final Set<State> F;
 
-    public DFA(Set<State> Q, Set<Symbol> Sigma, DeltaDFA d, State q0, Set<State> F) {
+    public ENFA(Set<State> Q, Set<Symbol> Sigma, DeltaNFA d, Set<State> q0, Set<State> F) {
         this.Q = Q;
         this.Sigma = Sigma;
         this.d = d;
@@ -37,9 +38,10 @@ public class DFA {
     public boolean run(Word ax)
             throws LanguageException
     {
-        State end = d.hat(q0, ax);
+        Set<State> end = d.hat(q0, ax);
         System.out.println("end is "+end);
-        return F.contains(end);
+        F.retainAll(end);
+        return F.size() > 0;
     }
     
 }

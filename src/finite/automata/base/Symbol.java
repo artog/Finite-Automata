@@ -5,19 +5,29 @@
  */
 package finite.automata.base;
 
+import finite.automata.base.Exceptions.LanguageException;
+
 /**
  *
  * @author Adam
  */
 public class Symbol {
     private final String symbol;
-
-    public Symbol(String symbol) {
+    
+    public static Symbol EMPTY = new Symbol();
+            
+    public Symbol(String symbol) throws LanguageException {
+        if (symbol == null) {
+            throw new LanguageException("Empty symbol");
+        }
         this.symbol = symbol;
     }
-
+    
     public Symbol(char symbol) {
         this.symbol = String.valueOf(symbol);
+    }
+    private Symbol() {
+        this.symbol = null;
     }
 
     @Override
