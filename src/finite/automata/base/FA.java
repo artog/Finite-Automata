@@ -5,13 +5,12 @@
  */
 package finite.automata.base;
 
-import finite.automata.base.Exceptions.InvalidFileException;
-import finite.automata.base.Exceptions.ExistingTransitionException;
-import finite.automata.base.Exceptions.ExistingStateException;
-import finite.automata.base.Exceptions.EpsilonTransitionException;
-import finite.automata.base.Exceptions.LanguageException;
+import finite.automata.base.Exceptions.*;
 import java.io.File;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -23,8 +22,16 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
+
 
 /**
  * A finite automaton, can be deterministic and non-deterministic. 
@@ -305,7 +312,7 @@ public class FA {
                 
                 
                 
-                NodeList statesNodes = root.getElementsByTagName("alphabeth");
+                NodeList statesNodes = root.getElementsByTagName("states");
                 Element statesElement = statesNodes.getLength() > 0 && statesNodes.item(0) instanceof Element
                         ? (Element) statesNodes.item(0) 
                         : null;
@@ -334,12 +341,12 @@ public class FA {
                 
                 
                 
-                NodeList transitionsNodes = root.getElementsByTagName("alphabeth");
+                NodeList transitionsNodes = root.getElementsByTagName("transitions");
                 Element transitionsElement = transitionsNodes.getLength() > 0 && transitionsNodes.item(0) instanceof Element
                         ? (Element) transitionsNodes.item(0) 
                         : null;
                 if (transitionsElement != null) {
-                    NodeList transitionNodes = transitionsElement.getElementsByTagName("state");
+                    NodeList transitionNodes = transitionsElement.getElementsByTagName("transition");
                     for (int i = 0; i < transitionNodes.getLength(); i++) {
                         Node get = transitionNodes.item(i);
                         if (get instanceof Element) {
@@ -378,5 +385,105 @@ public class FA {
         }
         
         throw new InvalidFileException();
+    }
+    
+    /**
+     *  <automata> 
+     *      <alphabeth>
+     *          <symbol value="a">
+     *          ...
+     *      </alphabeth>
+     *      <states>
+     *          <state name="q0" isFinal="true" isStart="true" \>
+     *          ...
+     *      </states>
+     *      <transitions>
+     *          <transition from="q0" to="q1" symbol="a" \>
+     *          ...
+     *      </transitions>
+     *  </automata>
+     * @return 
+     */
+    public String toXML() {
+        try {
+            
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.newDocument();
+            
+            Element root = doc.createElement("automata");
+            root.setAttribute("type", type.toString());
+            
+            Element alphabeth = doc.createElement("alphabeth");
+            for (Symbol symbol : this.alphabet) {
+                Element element = doc.createElement("symbol");
+                element.setAttribute("value", symbol.toString());
+                alphabeth.appendChild(element);
+            }
+            root.appendChild(alphabeth);
+            
+            
+            Element states = doc.createElement("states");
+            for (Map.Entry<String, State> e : this.states.entrySet()) {
+                String name = e.getKey();
+                State state = e.getValue();
+                
+                Element element = doc.createElement("state");
+                element.setAttribute("name", name);
+                element.setAttribute("isFinal", String.valueOf(state.isFinal()));
+                
+                boolean isStart = this.startState.equals(state);
+                element.setAttribute("isStart", String.valueOf(isStart));
+                
+                states.appendChild(element);
+                
+            }
+            root.appendChild(states);
+            
+            Element transitions = doc.createElement("transitions");
+            for (Transition transition : this.transitions) {
+                Element element = doc.createElement("transition");
+                element.setAttribute("from", transition.from().name());
+                element.setAttribute("to", transition.to().name());
+                element.setAttribute("symbol", transition.getSymbol().toString());
+                
+                transitions.appendChild(element);
+            }
+            root.appendChild(transitions);
+            
+            doc.appendChild(root);
+            
+            // write the content into xml file
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            
+            StringWriter writer = new StringWriter();
+            StreamResult result = new StreamResult(writer);
+            
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+            
+            transformer.transform(source, result);
+            
+            return writer.toString();
+            
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(FA.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerConfigurationException ex) {
+            Logger.getLogger(FA.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(FA.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
+    
+    public void save(File target) {
+        String xml = this.toXML();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(target))) {
+            bw.write(xml);
+        } catch (IOException ex) {
+            Logger.getLogger(FA.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 }

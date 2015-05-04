@@ -7,6 +7,7 @@ package finite.automata;
 
 import finite.automata.base.Exceptions.LanguageException;
 import finite.automata.base.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -30,7 +31,7 @@ public class FiniteAutomata {
      */
     public static void main(String[] args) {
         try {
-//            testFA();
+            testFA();
             Alphabeth a = new Alphabeth("abc");
             
             
@@ -239,8 +240,8 @@ public class FiniteAutomata {
         
         
         
-        FA dfa = new FA(FA.Type.DFA,states, q0, ts, alphabet);
-        
+        FA dfa = new FA(FA.Type.DFA, states, q0, ts, alphabet);
+        dfa.save(new File("test.xml"));
     }
 //    
 //    public static void testDFA() {
