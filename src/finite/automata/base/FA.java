@@ -224,6 +224,10 @@ public class FA {
         }
         return retval;
     }
+
+    public HashMap<String, State> getStates() {
+        return states;
+    }
     
     public Set<State> getAccessibleStates() {
         Set<State> accStates = new HashSet();
@@ -260,7 +264,10 @@ public class FA {
      * @throws EpsilonTransitionException 
      */
     public static FA fromFile(File source) 
-            throws InvalidFileException, LanguageException, ExistingTransitionException, EpsilonTransitionException 
+            throws  InvalidFileException, 
+                    LanguageException, 
+                    ExistingTransitionException, 
+                    EpsilonTransitionException 
     {
         
         try {

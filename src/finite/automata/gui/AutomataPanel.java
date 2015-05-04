@@ -10,7 +10,8 @@ import finite.automata.base.State;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JPanel;
 
 /**
@@ -38,8 +39,14 @@ public class AutomataPanel extends JPanel {
         
         if (fa != null) {
             
-            Set<State> states = fa.getStates();
+            HashMap<String, State> states = fa.getStates();
+            int n = 0;
             
+            for (Map.Entry<String, State> entry : states.entrySet()) {
+                String name = entry.getKey();
+                State s = entry.getValue();
+                g.drawString(name, (n % 4)*50, (n / 4)*50);
+            }
         }
     }
     
