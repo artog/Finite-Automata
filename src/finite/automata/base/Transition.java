@@ -16,10 +16,13 @@ public class Transition {
     private final State to;
     private final Symbol symbol;
 
-    public Transition(State from, State to, Symbol symbols) {
+    public Transition(State from, State to, Symbol symbol) {
+        if (from == null || to == null || symbol == null) {
+            throw new IllegalArgumentException();
+        }
         this.from = from;
         this.to = to;
-        this.symbol = symbols;
+        this.symbol = symbol;
     }
 
     public State transition(State q, Symbol a) {

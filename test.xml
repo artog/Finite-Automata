@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<automata type="DFA">
+  <alphabeth>
+    <symbol value="a"/>
+  </alphabeth>
+  <states>
+    <state isFinal="false" isStart="false" name="q1"/>
+    <state isFinal="false" isStart="false" name="q2"/>
+    <state isFinal="true" isStart="true" name="q0"/>
+  </states>
+  <transitions>
+    <transition from="q1" symbol="a" to="q2"/>
+    <transition from="q0" symbol="a" to="q1"/>
+    <transition from="q2" symbol="a" to="q0"/>
+  </transitions>
+</automata>
