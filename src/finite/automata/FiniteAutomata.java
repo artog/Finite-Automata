@@ -7,6 +7,7 @@ package finite.automata;
 
 import finite.automata.base.Exceptions.LanguageException;
 import finite.automata.base.*;
+import finite.automata.gui.MainFrame;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -29,21 +30,25 @@ public class FiniteAutomata {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try {
-//            testFA();
-            Alphabeth a = new Alphabeth("abc");
-            
-            
-            Set<String> words = a.getWords(5);
-            
-            System.out.println(words.toString());
-            
-        } catch (LanguageException ex) {
-            Logger.getLogger(FiniteAutomata.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-        Set<String> perms = new HashSet();
-        String[] a = {"0","1","2","3","4"};
+        MainFrame mf = new MainFrame();
+        mf.setVisible(true);
+        
+//        try {
+////            testFA();
+//            Alphabeth a = new Alphabeth("abc");
+//            
+//            
+//            Set<String> words = a.getWords(5);
+//            
+//            System.out.println(words.toString());
+//            
+//        } catch (LanguageException ex) {
+//            Logger.getLogger(FiniteAutomata.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        
+//        Set<String> perms = new HashSet();
+//        String[] a = {"0","1","2","3","4"};
         
         
 //        new FiniteAutomata();

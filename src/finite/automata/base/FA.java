@@ -33,11 +33,11 @@ import org.xml.sax.SAXException;
  */
 public class FA {
     
-    private final HashMap<String,State> states;
-    private State startState;
-    private final Set<Transition> transitions;
-    private final Set<Symbol> alphabet;
-    private Type type;
+    protected final HashMap<String,State> states;
+    protected State startState;
+    protected final Set<Transition> transitions;
+    protected final Set<Symbol> alphabet;
+    protected Type type;
     
     /**
      * NFA is used to denote the non-deterministic type. 
